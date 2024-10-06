@@ -44,6 +44,7 @@ void ThreadManager::InitTLS()
 
 void ThreadManager::DestroyTLS()
 {
+	// 동적으로 생성되는 객체를 이곳에서 해제시켜줌 TLS.
 
 }
 

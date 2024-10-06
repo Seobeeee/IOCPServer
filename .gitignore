@@ -35,3 +35,8 @@ GameServer/GameServer/x64/
 ServerCore/ServerCore/x64/Debug/ServerCore.tlog/CL.write.1.tlog
 ServerCore/ServerCore/x64/
 TestClient/TestClient/x64/
+*.tlog
+ServerCore/x64/
+*.idb
+GameServer/x64/
+TestClient/x64/
