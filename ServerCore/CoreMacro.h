@@ -10,6 +10,15 @@
 #define WRITE_LOCK				WRITE_LOCK_IDX(0)
 
 
+#ifdef _DEBUG
+#define newAlloc(size)			BaseAllocator::Alloc(size)
+#define newRelease(ptr)			BaseAllocator::Release(ptr)
+#else
+#define newAlloc(size)			BaseAllocator::Alloc(size)
+#define newRelease(ptr)			BaseAllocator::Release(ptr)
+#endif
+
+
 // 인위적인 크래시를 내고 싶을 떄 사용할 매크로.
 #define CRASH(cause)						\
 {											\

@@ -4,28 +4,34 @@
 #include "ThreadManager.h"
 #include "PlayerManager.h"
 #include "AccountManager.h"
+#include "Memory.h"
+
+class Knight
+{
+public:
+	Knight()
+	{
+		cout << endl;
+	}
+	Knight(int32 hp) : _hp(hp)
+	{
+
+	}
+
+	~Knight()
+	{
+
+	}
+
+private:
+
+	int32 _hp = 100;
+
+};
 
 int main()
 {
-	GThreadManager->Launch([=]
-		{
-			while (true)
-			{
-				cout << "PlayerThenAccount" << endl;
-				GPlayerManager.PlayerThenAccount();
-				this_thread::sleep_for(100ms);
-			}
-		});
+	Knight* knight = xnew<Knight>(100);
 
-	GThreadManager->Launch([=]
-		{
-			while (true)
-			{
-				cout << "AccountThenPlayer" << endl;
-				GAccountManager.AccountThenPlayer();
-				this_thread::sleep_for(100ms);
-			}
-		});
-
-	GThreadManager->Join();
+	xdelete(knight);
 }
