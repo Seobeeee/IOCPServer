@@ -49,6 +49,9 @@
       <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="Memory.h" />
+    <ClInclude Include="Container.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">

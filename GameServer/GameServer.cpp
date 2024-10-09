@@ -31,7 +31,5 @@ private:
 
 int main()
 {
-	Knight* knight = xnew<Knight>(100);
-
-	xdelete(knight);
+	vector<int32, StlAllocator<int32>> v;
 }
