@@ -1,48 +1,39 @@
 #include "pch.h"
 #include "MemoryPool.h"
 
+MemoryPool::MemoryPool(int32 allocSize) : _allocSize(allocSize)
+{
+    ::InitializeSListHead(&_header);
+}
+
 MemoryPool::~MemoryPool()
 {
-    while (_queue.empty() == false)
-    {
-        MemoryHeader* header = _queue.front();
-        _queue.pop();
-        ::free(header);
-    }
+    while (MemoryHeader* memory = static_cast<MemoryHeader*>(::InterlockedPopEntrySList(&_header)))
+        _aligned_free(memory);
 }
 
 void MemoryPool::Push(MemoryHeader* ptr)
 {
-    WRITE_LOCK;
     ptr->allocSize = 0;
 
-    _queue.push(ptr);
+    ::InterlockedPushEntrySList(&_header, static_cast<PSLIST_ENTRY>(ptr));
     _allocCount.fetch_sub(1);
 }
 
 MemoryHeader* MemoryPool::Pop()
 {
-    MemoryHeader* header = nullptr;
+    MemoryHeader* memory = static_cast<MemoryHeader*>(::InterlockedPopEntrySList(&_header));
 
+    if (memory == nullptr)
     {
-        WRITE_LOCK;
-        if (_queue.empty() == false)
-        {
-            header = _queue.front();
-            _queue.pop();
-        }
-    }
-
-    void* test = ::malloc(_allocSize);
-    if (header == nullptr)
-    {
-        header = reinterpret_cast<MemoryHeader*>(::malloc(_allocSize));
+        // 16바이트 정렬을 지켜줘야 하기 때문에 malloc 보다는 aligned_malloc을 사용
+        memory = reinterpret_cast<MemoryHeader*>(::_aligned_malloc(_allocSize, SLIST_ALIGNMENT));
     }
     else
     {
-        ASSERT_CRASH(header->allocSize == 0);
+        ASSERT_CRASH(memory->allocSize == 0);
     }
 
     _allocCount.fetch_add(1);
-    return header;
+    return memory;
 }
