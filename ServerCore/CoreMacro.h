@@ -10,16 +10,18 @@
 #define WRITE_LOCK				WRITE_LOCK_IDX(0)
 
 
-#ifdef _DEBUG
-#define newAlloc(size)			BaseAllocator::Alloc(size)
-#define newRelease(ptr)			BaseAllocator::Release(ptr)
-#else
-#define newAlloc(size)			BaseAllocator::Alloc(size)
-#define newRelease(ptr)			BaseAllocator::Release(ptr)
-#endif
+//#ifdef _DEBUG
+////#define newAlloc(size)			BaseAllocator::Alloc(size)
+////#define newRelease(ptr)			BaseAllocator::Release(ptr)
+//#define newAlloc(size)			PoolAllocator::Alloc(size)
+//#define newRelease(ptr)			PoolAllocator::Release(ptr)
+//#else
+//#define newAlloc(size)			BaseAllocator::Alloc(size)
+//#define newRelease(ptr)			BaseAllocator::Release(ptr)
+//#endif
 
 
-// ÀÎÀ§ÀûÀÎ Å©·¡½Ã¸¦ ³»°í ½ÍÀ» ‹š »ç¿ëÇÒ ¸ÅÅ©·Î.
+// ì¸ìœ„ì ì¸ í¬ë˜ì‹œë¥¼ ë‚´ê³  ì‹¶ì„ ë–„ ì‚¬ìš©í•  ë§¤í¬ë¡œ.
 #define CRASH(cause)						\
 {											\
 	uint32* crash = nullptr;				\
@@ -27,7 +29,7 @@
 	*crash = 0xDEADBEEF;					\
 }
 
-// Æ¯Á¤ÇÑ Á¶°ÇÀ» È®ÀÎÇÏ¿© Å©·¡½Ã¸¦ ³»°í½ÍÀ» ‹š »ç¿ë
+// íŠ¹ì •í•œ ì¡°ê±´ì„ í™•ì¸í•˜ì—¬ í¬ë˜ì‹œë¥¼ ë‚´ê³ ì‹¶ì„ ë–„ ì‚¬ìš©
 #define ASSERT_CRASH(expr)					\
 {											\
 	if(!(expr))								\
